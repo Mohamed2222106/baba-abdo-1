@@ -2,7 +2,6 @@ let tables = [];
 let activeTableId = null;
 let currentDish = null;
 let selectedExtra = null;
-let dailySales = 0; // إجمالي مبيعات اليوم
 
 // إنشاء الترابيزات بناءً على عدد الترابيزات المدخل
 function createTables() {
@@ -24,7 +23,7 @@ function createTables() {
     tableDiv.innerHTML = `<h3>ترابيزة ${table.id}</h3>
             <div id="orders-${table.id}"></div>
             <p id="total-${table.id}">الإجمالي: 0</p>
-            <button onclick="endOrder(${table.id})">إنهاء الأوردر</button>`; // إضافة زر إنهاء الأوردر
+            <button onclick="endOrder(${table.id})">إنهاء الأوردر</button>`;
 
     tableDiv.addEventListener("click", () => openMenu(table.id));
     tablesContainer.appendChild(tableDiv);
@@ -137,22 +136,13 @@ function removeOrder(tableId, orderIndex) {
   }
 }
 
-// إنهاء الأوردر ونقل الإجمالي إلى مبيعات اليوم
+// إنهاء الأوردر ومسح محتويات الترابيزة
 function endOrder(tableId) {
   const table = tables.find((t) => t.id === tableId);
   if (table) {
-    // مسح الأوامر في الترابيزة
-    table.orders = []; 
-    // تحديث عرض الأوامر
-    displayOrders(table); 
-    // تصفير الإجمالي الخاص بالترابيزة
-    document.getElementById("total-" + table.id).textContent = "الإجمالي: 0"; 
+    table.orders = []; // مسح الطلبات
+    displayOrders(table); // تحديث العرض
+    document.getElementById("total-" + table.id).textContent = "الإجمالي: 0"; // تصفير الإجمالي
     alert(`تم إنهاء الأوردر للترابيزة رقم ${tableId}`);
   }
-}
-
-// إعادة ضبط إجمالي مبيعات اليوم
-function resetDailySales() {
-  dailySales = 0;
-  document.getElementById("total-sales").textContent = dailySales; // إعادة تعيين إجمالي المبيعات إلى صفر
 }
