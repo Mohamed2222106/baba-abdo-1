@@ -34,30 +34,30 @@ function createTables() {
 // فتح نافذة القائمة عند الضغط على ترابيزة
 function openMenu(tableId) {
   activeTableId = tableId;
-  document.getElementById("menu-popup").classList.add("open"); // فتح نافذة القائمة باستخدام الـ class
+  document.getElementById("menu-popup").style.display = "block";
 }
 
 // إغلاق نافذة القائمة
 function closeMenu() {
-  document.getElementById("menu-popup").classList.remove("open"); // إغلاق نافذة القائمة باستخدام الـ class
+  document.getElementById("menu-popup").style.display = "none";
 }
 
 // اختيار إضافة (مثل المكرونة أو الكشري) من القائمة
 function chooseExtraOption(dishName, price) {
   currentDish = { name: dishName, price: price };
-  closeMenu();
-  document.getElementById("extra-option-popup").classList.add("open");
+  document.getElementById("menu-popup").style.display = "none";
+  document.getElementById("extra-option-popup").style.display = "block";
 }
 
 // إغلاق نافذة اختيار الإضافات
 function closeExtraOptionPopup() {
-  document.getElementById("extra-option-popup").classList.remove("open");
+  document.getElementById("extra-option-popup").style.display = "none";
 }
 
 // اختيار نوع المكرونة بعد تحديد الإضافة
 function selectPastaType(extra) {
   selectedExtra = extra;
-  closeExtraOptionPopup();
+  document.getElementById("extra-option-popup").style.display = "none";
 
   if (selectedExtra === "بدون") {
     currentDish.price = currentDish.price;
@@ -65,30 +65,33 @@ function selectPastaType(extra) {
     currentDish.price += 20; // إضافة سعر الإضافة
   }
 
-  document.getElementById("pasta-type-popup").classList.add("open");
+  document.getElementById("pasta-type-popup").style.display = "block";
 }
 
 // إغلاق نافذة اختيار نوع المكرونة
 function closePastaTypePopup() {
-  document.getElementById("pasta-type-popup").classList.remove("open");
+  document.getElementById("pasta-type-popup").style.display = "none";
 }
 
 // إضافة طلب مكرونة مع نوعها
 function addPastaOrder(pastaType) {
-  if (activeTableId !== null && currentDish !== null && selectedExtra !== null) {
+  if (
+    activeTableId !== null &&
+    currentDish !== null &&
+    selectedExtra !== null
+  ) {
     const table = tables.find((t) => t.id === activeTableId);
     if (table) {
-      const orderName = selectedExtra === "بدون"
-        ? `${currentDish.name} (${pastaType})`
-        : `${currentDish.name} + ${selectedExtra} (${pastaType})`;
+      const orderName =
+        selectedExtra === "بدون"
+          ? `${currentDish.name} (${pastaType})`
+          : `${currentDish.name} + ${selectedExtra} (${pastaType})`;
 
       const finalPrice = currentDish.price;
       table.orders.push({ name: orderName, price: finalPrice });
       displayOrders(table);
     }
   }
-
-  // إعادة تعيين المتغيرات بعد إتمام الطلب
   currentDish = null;
   selectedExtra = null;
   closePastaTypePopup();
@@ -121,7 +124,8 @@ function displayOrders(table) {
     ordersDiv.appendChild(orderDiv);
   });
 
-  document.getElementById("total-" + table.id).textContent = "الإجمالي: " + total;
+  document.getElementById("total-" + table.id).textContent =
+    "الإجمالي: " + total;
 }
 
 // إزالة طلب من الترابيزة
