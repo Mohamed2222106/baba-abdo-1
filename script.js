@@ -141,12 +141,13 @@ function removeOrder(tableId, orderIndex) {
 function endOrder(tableId) {
   const table = tables.find((t) => t.id === tableId);
   if (table) {
-    const total = table.orders.reduce((sum, order) => sum + order.price, 0);
-    dailySales += total; // إضافة المجموع إلى إجمالي مبيعات اليوم
-    document.getElementById("total-sales").textContent = dailySales; // تحديث إجمالي مبيعات اليوم
-    table.orders = []; // تصفير الأوامر في الترابيزة
-    displayOrders(table); // تحديث عرض الأوامر للترابيزة
-    document.getElementById("total-" + table.id).textContent = "الإجمالي: 0"; // تصفير الإجمالي في الترابيزة
+    // مسح الأوامر في الترابيزة
+    table.orders = []; 
+    // تحديث عرض الأوامر
+    displayOrders(table); 
+    // تصفير الإجمالي الخاص بالترابيزة
+    document.getElementById("total-" + table.id).textContent = "الإجمالي: 0"; 
+    alert(`تم إنهاء الأوردر للترابيزة رقم ${tableId}`);
   }
 }
 
